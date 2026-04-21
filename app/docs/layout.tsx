@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 export default function Layout({ children }: { children: ReactNode }) {
   return (
     <DocsLayout
-      tree={source.getPageTree()}
+      tree={source.pageTree}
       nav={{ title: "yaml-api-generator" }}
     >
       {children}
