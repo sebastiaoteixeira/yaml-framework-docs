@@ -5,7 +5,7 @@ import {
   DocsBody,
   DocsTitle,
   DocsDescription,
-} from "fumadocs-ui/layouts/docs/page";
+} from "fumadocs-ui/page";
 import { getMDXComponents } from "@/components/mdx";
 
 interface PageProps {
