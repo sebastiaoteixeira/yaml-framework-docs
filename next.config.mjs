@@ -6,6 +6,7 @@ const withMDX = createMDX();
 const config = {
   reactStrictMode: true,
   output: "export",
+  trailingSlash: true,
   basePath: "/yaml-framework-docs",
   images: {
     unoptimized: true,
