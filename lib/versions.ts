@@ -1,5 +1,5 @@
-import type { Folder } from "fumadocs-core/page-tree";
-import { source } from "@/lib/source";
+import { readdirSync, readFileSync } from "fs";
+import { join } from "path";
 
 export interface VersionOption {
   title: string;
@@ -7,20 +7,37 @@ export interface VersionOption {
   url: string;
 }
 
-// Derives version list from root folders in the page tree.
-// First folder = latest. Add more versioned folders to docs/ and they appear automatically.
-export function getVersionOptions(): VersionOption[] {
-  const rootFolders = source.pageTree.children.filter(
-    (node): node is Folder => node.type === "folder" && !!node.root
-  );
-
-  return rootFolders.map((node, idx) => ({
-    title: String(node.name),
-    description: idx === 0 ? "Latest" : undefined,
-    url: node.index?.url ?? `/docs/${String(node.name)}/`,
-  }));
+// Discovers versioned folders by scanning content/docs for subdirectories
+// whose meta.json has "root": true. First folder found = latest.
+// Adding a new versioned folder automatically includes it here.
+function discoverVersions(): VersionOption[] {
+  const docsDir = join(process.cwd(), "content", "docs");
+  try {
+    return readdirSync(docsDir, { withFileTypes: true })
+      .filter((entry) => entry.isDirectory())
+      .filter((entry) => {
+        try {
+          const meta = JSON.parse(
+            readFileSync(join(docsDir, entry.name, "meta.json"), "utf-8")
+          );
+          return meta.root === true;
+        } catch {
+          return false;
+        }
+      })
+      .sort((a, b) => b.name.localeCompare(a.name, undefined, { numeric: true }))
+      .map((entry, idx) => ({
+        title: entry.name,
+        description: idx === 0 ? "Latest" : undefined,
+        url: `/docs/${entry.name}/`,
+      }));
+  } catch {
+    return [];
+  }
 }
 
+export const versionOptions: VersionOption[] = discoverVersions();
+
 export function getLatestVersionUrl(): string {
-  return getVersionOptions()[0]?.url ?? "/docs/";
+  return versionOptions[0]?.url ?? "/docs/";
 }

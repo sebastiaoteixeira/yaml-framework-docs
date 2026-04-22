@@ -1,11 +1,12 @@
 import { source } from "@/lib/source";
 import { DocsLayout } from "fumadocs-ui/layouts/docs";
 import { RootToggle } from "fumadocs-ui/components/layout/root-toggle";
-import { getVersionOptions } from "@/lib/versions";
+import { versionOptions } from "@/lib/versions";
 import type { ReactNode } from "react";
 
-const versionOptions = getVersionOptions();
-const placeholder = `${versionOptions[0]?.title ?? "v?.?"} — Latest`;
+const placeholder = versionOptions[0]
+  ? `${versionOptions[0].title} — Latest`
+  : "Select version";
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
