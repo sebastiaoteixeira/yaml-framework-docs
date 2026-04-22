@@ -1,12 +1,11 @@
 import { source } from "@/lib/source";
 import { DocsLayout } from "fumadocs-ui/layouts/docs";
 import { RootToggle } from "fumadocs-ui/components/layout/root-toggle";
+import { getVersionOptions } from "@/lib/versions";
 import type { ReactNode } from "react";
 
-const versionOptions = [
-  { title: "v0.2", description: "Latest", url: "/docs/v0.2" },
-  { title: "v0.1", url: "/docs/v0.1" },
-];
+const versionOptions = getVersionOptions();
+const placeholder = `${versionOptions[0]?.title ?? "v?.?"} — Latest`;
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
@@ -14,7 +13,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       tree={source.pageTree}
       nav={{ title: "yaml-api-generator" }}
       sidebar={{
-        banner: <RootToggle options={versionOptions} placeholder="Select version" />,
+        banner: <RootToggle options={versionOptions} placeholder={placeholder} />,
         tabs: false,
       }}
     >
