@@ -14,7 +14,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       tree={source.pageTree}
       nav={{ title: "yaml-api-generator" }}
       sidebar={{
-        banner: <RootToggle options={versionOptions} />,
+        banner: <RootToggle options={versionOptions} placeholder="Select version" />,
         tabs: false,
       }}
     >
