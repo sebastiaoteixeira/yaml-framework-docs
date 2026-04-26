@@ -1,5 +1,5 @@
 import { source } from "@/lib/source";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import {
   DocsPage,
   DocsBody,
@@ -7,6 +7,7 @@ import {
   DocsDescription,
 } from "fumadocs-ui/page";
 import defaultMdxComponents from "fumadocs-ui/mdx";
+import { getLatestVersionUrl } from "@/lib/versions";
 import type { Metadata } from "next";
 
 interface PageProps {
@@ -15,6 +16,11 @@ interface PageProps {
 
 export default async function Page({ params }: PageProps) {
   const { slug } = await params;
+
+  if (!slug || slug.length === 0) {
+    redirect(getLatestVersionUrl());
+  }
+
   const page = source.getPage(slug);
 
   if (!page) notFound();

@@ -1,22 +1,19 @@
 import { source } from "@/lib/source";
 import { DocsLayout } from "fumadocs-ui/layouts/docs";
-import { RootToggle } from "fumadocs-ui/components/layout/root-toggle";
-import { versionOptions } from "@/lib/versions";
+import { getSidebarTabs } from "fumadocs-ui/utils/get-sidebar-tabs";
+import { VersionAwareSidebarFolder } from "./sidebar-folder";
 import type { ReactNode } from "react";
 
-const placeholder = versionOptions[0]
-  ? `${versionOptions[0].title} — Latest`
-  : "Select version";
+const tabs = getSidebarTabs(source.pageTree).map(
+  ({ urls: _urls, unlisted: _unlisted, ...tab }) => tab
+);
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
     <DocsLayout
       tree={source.pageTree}
       nav={{ title: "yaml-api-generator" }}
-      sidebar={{
-        banner: <RootToggle options={versionOptions} placeholder={placeholder} />,
-        tabs: false,
-      }}
+      sidebar={{ tabs, components: { Folder: VersionAwareSidebarFolder } }}
     >
       {children}
     </DocsLayout>
