@@ -13,7 +13,10 @@ import {
 } from "fumadocs-ui/components/dialog/search";
 
 export default function CustomSearchDialog(props: SharedProps) {
-  const { search, setSearch, query } = useDocsSearch({ type: "static" });
+  const { search, setSearch, query } = useDocsSearch({
+    type: "static",
+    from: "/yaml-framework-docs/api/search/",
+  });
 
   return (
     <SearchDialog
@@ -26,7 +29,7 @@ export default function CustomSearchDialog(props: SharedProps) {
       <SearchDialogContent>
         <SearchDialogHeader>
           <SearchDialogIcon />
-          <SearchDialogInput />
+          <SearchDialogInput placeholder="Search..." />
           <SearchDialogClose />
         </SearchDialogHeader>
         <SearchDialogList

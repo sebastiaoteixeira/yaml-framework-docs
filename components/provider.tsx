@@ -5,6 +5,15 @@ import type { ReactNode } from "react";
 
 export function Provider({ children }: { children: ReactNode }) {
   return (
-    <RootProvider search={{ SearchDialog }}>{children}</RootProvider>
+    <RootProvider
+      search={{
+        SearchDialog,
+        options: {
+          api: "/yaml-framework-docs/api/search",
+        },
+      }}
+    >
+      {children}
+    </RootProvider>
   );
 }
