@@ -15,7 +15,7 @@ import {
 export default function CustomSearchDialog(props: SharedProps) {
   const { search, setSearch, query } = useDocsSearch({
     type: "static",
-    from: "/yaml-framework-docs/api/search/",
+    from: "/yaml-framework-docs/api/search",
   });
 
   return (
