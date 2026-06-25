@@ -7,6 +7,7 @@ import {
   DocsDescription,
 } from "fumadocs-ui/page";
 import defaultMdxComponents from "fumadocs-ui/mdx";
+import { Mermaid } from "@/components/mermaid";
 import { getLatestVersionUrl, versionOptions } from "@/lib/versions";
 import type { Metadata } from "next";
 import type { PageTree } from "fumadocs-core/server";
@@ -59,7 +60,7 @@ export default async function Page({ params }: PageProps) {
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
       <DocsBody>
-        <MDX components={{ ...defaultMdxComponents }} />
+        <MDX components={{ ...defaultMdxComponents, Mermaid }} />
       </DocsBody>
     </DocsPage>
   );
