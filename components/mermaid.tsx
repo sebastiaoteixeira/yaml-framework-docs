@@ -8,6 +8,11 @@ export function Mermaid({ chart }: { chart: string }) {
     const svg = renderMermaidSVG(chart, {
       bg: "var(--color-fd-background)",
       fg: "var(--color-fd-foreground)",
+      line: "var(--color-fd-foreground)",
+      muted: "var(--color-fd-foreground)",
+      border: "var(--color-fd-foreground)",
+      accent: "var(--color-fd-primary)",
+      surface: "var(--color-fd-secondary)",
       transparent: true,
     });
     return (
