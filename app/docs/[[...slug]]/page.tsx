@@ -23,34 +23,32 @@ function findFirstPageUrl(node: PageTree.Node): string | undefined {
   return undefined;
 }
 
+function findVersionLandingUrl(slug: string[]): string | undefined {
+  if (slug.length !== 1 || !versionOptions.some((v) => v.title === slug[0])) {
+    return undefined;
+  }
+  const versionFolder = source.pageTree.children.find(
+    (child): child is PageTree.Folder =>
+      child.type === "folder" && child.name === slug[0]
+  );
+  return versionFolder && findFirstPageUrl(versionFolder);
+}
+
 interface PageProps {
   params: Promise<{ slug?: string[] }>;
 }
 
 export default async function Page({ params }: PageProps) {
-  const { slug } = await params;
+  const { slug = [] } = await params;
 
-  if (!slug || slug.length === 0) {
+  if (slug.length === 0) {
     redirect(getLatestVersionUrl());
   }
 
-  const isVersionIndex =
-    slug.length === 1 &&
-    versionOptions.some((v) => v.title === slug[0]);
-
-  if (isVersionIndex) {
-    const versionFolder = source.pageTree.children.find(
-      (child): child is PageTree.Folder =>
-        child.type === "folder" && child.name === slug![0]
-    );
-    if (versionFolder) {
-      const firstUrl = findFirstPageUrl(versionFolder);
-      if (firstUrl) redirect(firstUrl);
-    }
-  }
-
   const page = source.getPage(slug);
+  const landingUrl = findVersionLandingUrl(slug);
 
+  if (landingUrl && landingUrl !== page?.url) redirect(landingUrl);
   if (!page) notFound();
 
   const MDX = page.data.body;
